@@ -1,0 +1,23 @@
+name: Matrix bug
+
+on:
+  workflow_dispatch:
+
+jobs:
+  loop_matrix:
+    strategy:
+      matrix:
+        index: [0,1,2,3]
+    uses: ./.github/workflows/reusable.yml
+
+  final_job:
+    name: Final step
+    runs-on: windows-latest
+    needs: [loop_matrix]
+    if: ${{ !cancelled() && !failure() }}
+    steps:
+      - name: Test
+        run: |
+          write-output "${{ needs.loop_matrix.result }}"
+          write-output "${{ contains(needs.*.result, 'cancelled') }}"
+          write-output "${{ contains(needs.*.result, 'failure') }}"
