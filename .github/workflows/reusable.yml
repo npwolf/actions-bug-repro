@@ -1,0 +1,15 @@
+name: Reusable
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    name: Reusable
+    runs-on: windows-latest
+    
+    steps:
+      - name: toss a coin
+        run: |
+          $test = $true, $false | get-random
+          if($test) { throw "fail" }
