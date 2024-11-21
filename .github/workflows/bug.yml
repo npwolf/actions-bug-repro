@@ -10,6 +10,13 @@ jobs:
         index: [0,1,2,3]
     uses: ./.github/workflows/reusable.yml
 
+  on-failure:
+    needs: loop_matrix
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Failed!"
+      
   final_job:
     name: Final step
     runs-on: windows-latest
@@ -18,6 +25,6 @@ jobs:
     steps:
       - name: Test
         run: |
-          write-output "${{ needs.loop_matrix.result }}"
-          write-output "${{ contains(needs.*.result, 'cancelled') }}"
-          write-output "${{ contains(needs.*.result, 'failure') }}"
+          write-output "needs.loop_matrix.result ${{ needs.loop_matrix.result }}"
+          write-output "needs.*.result cancelled ${{ contains(needs.*.result, 'cancelled') }}"
+          write-output "needs.*.result failure ${{ contains(needs.*.result, 'failure') }}"
