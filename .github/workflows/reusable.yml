@@ -6,10 +6,16 @@ on:
 jobs:
   test:
     name: Reusable
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     
     steps:
       - name: toss a coin
         run: |
-          $test = $true, $false | get-random
-          if($test) { throw "fail" }
+          test=$(shuf -e true false -n 1)
+          if [ "$test" = "true" ]; then
+              echo "fail" >&2
+              exit 1
+          else
+            echo "success"
+          fi
+
