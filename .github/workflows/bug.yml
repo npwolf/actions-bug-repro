@@ -31,6 +31,15 @@ jobs:
     steps:
       - run: echo "Cancelled!"
 
+  on-better-failure-detection:
+    needs: loop_matrix
+    if: ${{ always() && !cancelled() && contains(needs.*.result, 'cancelled') || failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "It really failed!"
+          exit 1
+
   final_job:
     name: Final step
     runs-on: ubuntu-latest

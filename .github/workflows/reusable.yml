@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: toss a coin
         run: |
+          echo "Sleeping..."
+          sleep 5
           test=$(shuf -e true false -n 1)
           if [ "$test" = "true" ]; then
               echo "fail" >&2
