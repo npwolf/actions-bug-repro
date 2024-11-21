@@ -32,7 +32,7 @@ jobs:
       - run: echo "Cancelled!"
 
   on-better-failure-detection:
-    #needs: loop_matrix
+    needs: loop_matrix
     if: always() && !cancelled() && contains(needs.*.result, 'cancelled') || failure()
     runs-on: ubuntu-latest
     steps:
