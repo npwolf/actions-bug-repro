@@ -32,10 +32,14 @@ jobs:
       - run: echo "Cancelled!"
 
   on-better-failure-detection:
-    needs: loop_matrix
-    if: ${{ always() && !cancelled() && contains(needs.*.result, 'cancelled') || failure() }}
+    #needs: loop_matrix
+    if: always() && !cancelled() && contains(needs.*.result, 'cancelled') || failure()
     runs-on: ubuntu-latest
     steps:
+      - name: Dump needs context
+        env:
+          NEEDS_CONTEXT: ${{ toJson(needs) }}
+        run: echo "$NEEDS_CONTEXT"  
       - run: |
           echo "It really failed!"
           exit 1
